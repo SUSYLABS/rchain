@@ -1,7 +1,6 @@
 from random import Random
 import pytest
 from docker.client import DockerClient
-from random import Random
 
 from . import conftest
 
@@ -135,6 +134,10 @@ def test_catch_up(command_line_options: CommandLineOptions, random_generator: Ra
 
                         expected_blocks_count = 31
 
+                        deploy1.join()
+                        deploy2.join()
+                        deploy3.join()
+
                         wait_for_blocks_count_at_least(
                             context,
                             validator1,
@@ -151,10 +154,6 @@ def test_catch_up(command_line_options: CommandLineOptions, random_generator: Ra
                             expected_blocks_count,
                         )
 
-
-                        deploy1.join()
-                        deploy2.join()
-                        deploy3.join()
 
                         with bootstrap_connected_peer(context=context, bootstrap=bootstrap_node, name='bonded-validator-4', keypair=BONDED_VALIDATOR_KEY_4) as validator4:
                             wait_for_blocks_count_at_least(
