@@ -132,12 +132,12 @@ def test_catch_up(command_line_options: CommandLineOptions, random_generator: Ra
                         deploy3 = DeployThread("validator3", validator3, contract_path, 10)
                         deploy3.start()
 
-                        expected_blocks_count = 31
 
                         deploy1.join()
                         deploy2.join()
                         deploy3.join()
 
+                        expected_blocks_count = 31
                         wait_for_blocks_count_at_least(
                             context,
                             validator1,
@@ -154,7 +154,7 @@ def test_catch_up(command_line_options: CommandLineOptions, random_generator: Ra
                             expected_blocks_count,
                         )
 
-
+                        expected_vdag = validator1.get_vdag()
                         with bootstrap_connected_peer(context=context, bootstrap=bootstrap_node, name='bonded-validator-4', keypair=BONDED_VALIDATOR_KEY_4) as validator4:
                             wait_for_blocks_count_at_least(
                                 context,
@@ -162,3 +162,4 @@ def test_catch_up(command_line_options: CommandLineOptions, random_generator: Ra
                                 expected_blocks_count,
                             )
 
+                            assert expected_vdag == validator4.get_vdag()
