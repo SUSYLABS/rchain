@@ -154,12 +154,17 @@ def test_catch_up(command_line_options: CommandLineOptions, random_generator: Ra
                             expected_blocks_count,
                         )
 
-                        expected_vdag = validator1.get_vdag()
                         with bootstrap_connected_peer(context=context, bootstrap=bootstrap_node, name='bonded-validator-4', keypair=BONDED_VALIDATOR_KEY_4) as validator4:
                             wait_for_blocks_count_at_least(
                                 context,
                                 validator4,
                                 expected_blocks_count,
                             )
+                            validator1_vdag = validator1.get_vdag()
+                            validator2_vdag = validator2.get_vdag()
+                            validator3_vdag = validator3.get_vdag()
+                            validator4_vdag = validator4.get_vdag()
 
-                            assert expected_vdag == validator4.get_vdag()
+                            assert validator1_vdag == validator4_vdag
+                            assert validator2_vdag == validator4_vdag
+                            assert validator3_vdag == validator4_vdag
